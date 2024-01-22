@@ -1,0 +1,126 @@
+body {
+    display: grid;
+    height: 100vh;
+    margin: 0;
+    place-items: center;
+}
+
+.thongTinHV {
+    width: 280px;
+    height: 300px;
+    border: 2px solid #333;
+    padding: 20px;
+    position: relative;
+    top: 50px;
+}
+
+.tthv {
+    text-align: center;
+}
+
+.input {
+    position: absolute;
+    right: 20px;
+}
+
+.inputradio1 {
+    position: absolute;
+    left: 123px;
+}
+
+.nam {
+    position: absolute;
+    left: 145px;
+}
+
+.inputradio2 {
+    position: absolute;
+    left: 190px;
+}
+
+.nu {
+    position: absolute;
+    left: 213px;
+}
+
+.luulai {
+    position: absolute;
+    width: 200px;
+    height: 35px;
+    border-radius: 5px;
+    left: 60px;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.luulai:hover {
+    background-color: chocolate;
+    color: white;
+}
+
+.danhSachHV {
+    width: 1000px;
+    height: 700px;
+    border: 2px solid #333;
+    padding: 20px;
+    position: relative;
+    top: 100px;
+}
+
+.tieuDe {
+    text-align: center;
+}
+
+.search {
+    position: absolute;
+    left: 80px;
+}
+
+.btnSearch:hover {
+    background-color: chocolate;
+    color: white;
+}
+
+.table {
+    position: absolute;
+    width: 880px;
+    top: 140px;
+    left: 80px;
+}
+
+.th1 {
+    width: 10px;
+}
+
+.th2 {
+    width: 100px;
+}
+
+.th3 {
+    width: 130px;
+}
+
+.th4 {
+    width: 100px;
+}
+
+.th5 {
+    width: 80px;
+}
+
+.th6 {
+    width: 60px;
+}
+
+.th7 {
+    width: 80px;
+}
+
+span {
+    color: blue;
+    text-decoration: underline;
+}
+
+span:hover {
+    color: red;
+}
