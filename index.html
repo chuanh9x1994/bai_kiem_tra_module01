@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài kiểm tra Module 1</title>
+    <style>
+        body {
+            display: grid;
+            height: 100vh;
+            margin: 0;
+            place-items: center;
+        }
+
+        .thongTinHV {
+            width: 280px;
+            height: 300px;
+            border: 2px solid #333;
+            padding: 20px;
+            position: relative;
+            top: 50px;
+        }
+
+        .tthv {
+            text-align: center;
+        }
+
+        .input {
+            position: absolute;
+            right: 20px;
+        }
+
+        .inputradio1 {
+            position: absolute;
+            left: 123px;
+        }
+
+        .nam {
+            position: absolute;
+            left: 145px;
+        }
+
+        .inputradio2 {
+            position: absolute;
+            left: 190px;
+        }
+
+        .nu {
+            position: absolute;
+            left: 213px;
+        }
+
+        .luulai {
+            position: absolute;
+            width: 200px;
+            height: 35px;
+            border-radius: 5px;
+            left: 60px;
+            font-size: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .luulai:hover {
+            background-color: chocolate;
+            color: white;
+        }
+
+        .danhSachHV {
+            width: 1000px;
+            height: 700px;
+            border: 2px solid #333;
+            padding: 20px;
+            position: relative;
+            top: 100px;
+        }
+
+        .tieude {
+            text-align: center;
+        }
+
+        .search {
+            position: absolute;
+            left: 80px;
+        }
+
+        .table {
+            position: absolute;
+            width: 880px;
+            top: 140px;
+            left: 80px;
+        }
+
+        .th1 {
+            width: 10px;
+        }
+
+        .th2 {
+            width: 100px;
+        }
+
+        .th3 {
+            width: 130px;
+        }
+
+        .th4 {
+            width: 100px;
+        }
+
+        .th5 {
+            width: 80px;
+        }
+
+        .th6 {
+            width: 60px;
+        }
+
+        .th7 {
+            width: 80px;
+        }
+
+        span {
+            color: blue;
+            text-decoration: underline;
+        }
+
+        span:hover {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="thongTinHV">
+        <h1 class="tthv">Thông tin học viên</h1>
+        <label for="name">Họ và tên:</label>
+        <input type="text" id="name" placeholder="vui lòng nhập tên" required class="input"><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="vui lòng nhập email" class="input"><br><br>
+
+        <label for="phone">Số điện thoại:</label>
+        <input type="number" id="phone" placeholder="vui lòng nhập sđt" class="input"><br><br>
+
+        <label for="address">Quê quán:</label>
+        <input type="text" id="address" placeholder="vui lòng nhập địa chỉ" required class="input"><br><br>
+
+        <label>Giới tính:</label>
+        <input type="radio" id="Nam" value="Nam" name="gender" checked class="inputradio1">
+        <label class="nam">Nam</label>
+        <input type="radio" id="Nu" value="Nữ" name="gender" class="inputradio2">
+        <label class="nu">Nữ</label><br><br>
+
+        <button onclick="addDs()" class="luulai">Lưu lại</button>
+    </div>
+
+    <div class="danhSachHV">
+        <div>
+            <h1 class="tieude">Danh sách học viên</h1>
+        </div>
+        <div class="search">
+            <label for="search">Tìm kiếm tên học viên: </label>
+            <!--  oninput để khi tìm kiếm đánh ký tự đến đâu sẽ search đến đó. -->
+            <input type="text" name="" id="search" oninput="search2()">
+            <button onclick="search2()">search</button>
+        </div>
+
+        <div class="table">
+            <table border="1" cellpadding="10" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th class="th1">#</th>
+                        <th class="th2">Họ tên</th>
+                        <th class="th3">Email</th>
+                        <th class="th4">Điện thoại</th>
+                        <th class="th5">Địa chỉ</th>
+                        <th class="th6">Gender</th>
+                        <th class="th7">Hành động</th>
+                        <th><button onclick="sapXep()">Sắp xếp (alpha b)</button></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+        // hàm tạo id ngẫu nhiên.
+        function uuid() {
+            return Math.floor(Math.random() * 9999) + new Date().getMilliseconds();
+        }
+
+        // lấy dữ liệu mảng user trên local về
+        let students = JSON.parse(localStorage.getItem("users")) || [];
+
+        let check = -1;
+        // hàm lưu thông tin student.
+        function addDs() {
+            let hoTen = document.getElementById("name").value;
+            let eMal = document.getElementById("email").value;
+            let soDT = document.getElementById("phone").value;
+            let queQuan = document.getElementById("address").value;
+            let gioiTinh = document.getElementsByName("gender");
+            let gioiTinhValue = "";
+            for (let i = 0; i < gioiTinh.length; i++) {
+                if (gioiTinh.item(i).checked) {
+                    gioiTinhValue = gioiTinh.item(i).value;
+                }
+            }
+
+            // Tạo đối tượng sinh viên.
+            let sTDent = {
+                name: hoTen,
+                email: eMal,
+                phone: soDT,
+                address: queQuan,
+                gender: gioiTinhValue,
+                id: uuid(),
+            }
+
+            // kiểm tra xem khi bấm lưu sẽ thêm sv mới hay cập nhật
+            if (check == -1) {
+                students.push(sTDent);
+                // sau khi push vào xong, thì lưu dữ liệu trên local lại.
+                localStorage.setItem("users", JSON.stringify(students));
+
+                // sau khi lưu dữ liệu xong thì gọi làm render.
+                render(students);
+            } else {
+                let index = students.findIndex((item) => {
+                    return item.id == check;
+                })
+                students.splice(index, 1, sTDent);
+                render(students);
+            }
+            // reset trống các ô input
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("address").value = "";
+            document.getElementById("Nam").checked = true;
+            check = -1;
+        }
+
+        // Tạo hàm render
+        function render(data) {
+            let elm = "";
+            for (let i = 0; i < data.length; i++) {
+                elm += `
+                            <tr>
+                                <td>${i + 1}</td>
+                                <td>${data[i].name}</td>
+                                <td>${data[i].email}</td>
+                                <td>${data[i].phone}</td>
+                                <td>${data[i].address}</td>
+                                <td>${data[i].gender}</td>
+                                <td>
+                                    <span onclick="edit(${data[i].id})" class="edit">edit</span> <span> | </span> <span onclick="del(${data[i].id})" class="delete">delete</span>
+                                </td>
+                                <td></td>
+                            </tr>
+                        `
+            }
+            document.getElementById("tbody").innerHTML = elm;
+        }
+        render(students);
+
+        // tạo hàm xóa
+        function del(id) {
+            // tìm vị trí phần tử  muốn xóa
+            let index = students.findIndex((item) => {
+                return item.id == id;
+            })
+            let xacNhan = confirm("bạn có muốn xóa hay không?");
+            if (xacNhan == false) {
+                return;
+            } else {
+                students.splice(index, 1)
+                render(students);
+            }
+        }
+
+        // tạo hàm edit
+        function edit(id) {
+            // tìm vị trí phần tử cập nhật
+            let index = students.findIndex((item) => {
+                return item.id == id;
+            })
+            document.getElementById("name").value = students[index].name;
+            document.getElementById("email").value = students[index].email;
+            document.getElementById("phone").value = students[index].phone;
+            document.getElementById("address").value = students[index].address;
+            if (students[index].gender == "Nam") {
+                document.getElementById("Nam").checked = true;
+            } else if (students[index].gender == "Nữ") {
+                document.getElementById("Nu").checked = true;
+            }
+            check = id;
+        }
+
+        // sắp xếp theo tên.
+        function soSanhTheoTen(a, b) {
+
+            let tenA = a.name.toUpperCase();
+            let tenB = b.name.toUpperCase();
+
+            if (tenA < tenB) {
+                return -1;
+            } else if (tenA > tenB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        function sapXep() {
+            students.sort(soSanhTheoTen);
+            render(students);
+        }
+
+        // tìm kiếm học viên
+        function search1() {
+            console.log("asadsadas");
+            let timSinhVien = [];
+            let timTen = document.getElementById("search").value;
+            let checkTen = -1;
+            for (let i = 0; i < students.length; i++) {
+                if (students[i].name === timTen) {
+                    checkTen = i;
+                    timSinhVien.push(students[i]);
+                }
+            }
+            if (checkTen == -1) {
+                console.log("không có sinh viên nào.");
+            }
+            console.log(timSinhVien);
+            render(timSinhVien);
+        }
+
+        // cách 2
+        function search2() {
+            let timTen = document.getElementById("search").value;
+            let ketQua = students.filter((item) => {
+                return item.name.indexOf(timTen) != -1;
+            })
+            render(ketQua);
+        }
+    </script>
+</body>
+
+</html>
